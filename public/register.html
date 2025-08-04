@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - ADF Chat</title>
+    <link rel="stylesheet" href="/register.css" />
+    <link rel="icon" href="https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/project.webp?v=1745362993382" type="image/x-icon">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Register</h2>
+      <!-- Error message (hidden by default) -->
+      <div id="error-message" class="error-message">
+        <!-- Error message will be shown here -->
+      </div>
+
+      <!-- Registration form -->
+      <form id="registerForm">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+          placeholder="Enter your username"
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          required
+          placeholder="Confirm your password"
+        />
+
+        <!-- Password Strength Bar (Below Confirm Password) -->
+        <div id="password-strength-container">
+          <div id="password-strength-text"></div>
+          <div id="password-strength-bar"></div>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+
+      <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js"></script>
+    <script>
+      const passwordInput = document.getElementById("password");
+      const strengthBar = document.getElementById("password-strength-bar");
+      const strengthText = document.getElementById("password-strength-text");
+
+      const strengthLevels = [
+        { label: "Very Weak", color: "red" },
+        { label: "Weak", color: "orange" },
+        { label: "Okay", color: "yellow" },
+        { label: "Good", color: "lightgreen" },
+        { label: "Strong", color: "green" },
+        { label: "Elite", color: "purple" },
+        { label: "Super Elite", color: "pink" }, // Bonus level for extra strong passwords
+        { label: "Ultimate", color: "gold" }, // Capped at level 7
+      ];
+
+      // Function to evaluate additional password strength (for adding special characters, length, etc.)
+      function evaluateExtraStrength(password) {
+        let bonusScore = 0;
+
+        // Length check: Increase bonus for longer passwords
+        if (password.length >= 16) bonusScore += 1; // Bonus for length >= 16
+        if (password.length >= 20) bonusScore += 1; // More bonus for length >= 20
+
+        // Character diversity checks: Increase bonus for diversity
+        if (/[a-z]/.test(password)) bonusScore += 1; // Lowercase letters
+        if (/[A-Z]/.test(password)) bonusScore += 1; // Uppercase letters
+        if (/[0-9]/.test(password)) bonusScore += 1; // Numbers
+        if (/[^a-zA-Z0-9]/.test(password)) bonusScore += 1; // Special characters
+
+        return bonusScore;
+      }
+
+      // Function to handle password input changes
+      passwordInput.addEventListener("input", function () {
+        const password = passwordInput.value;
+
+        // Use zxcvbn to evaluate password strength
+        const result = zxcvbn(password);
+        let score = result.score; // Score from zxcvbn (0 to 4)
+
+        // If the score is 4 (Good), we'll track the extra stuff added
+        if (score >= 3) {
+          const extraStrength = evaluateExtraStrength(password);
+          score = Math.min(3 + extraStrength, 7); // Add extra strength, but cap at 7 (Ultimate)
+        }
+
+        // Set the width of the strength bar based on the score
+        const strength = strengthLevels[score];
+        strengthBar.style.width = (score + 1) * 12.5 + "%"; // 14.28% for each level up to 7
+        strengthBar.style.backgroundColor = strength.color;
+
+        // Set the strength text (White, bold, above the bar)
+        strengthText.textContent = `Your password is: `;
+        strengthText.style.color = "white";
+        strengthText.style.fontWeight = "bold";
+
+        // Set the colored level text (not bold)
+        const levelText = document.createElement("span");
+        levelText.textContent = strength.label;
+        levelText.style.color = strength.color;
+        levelText.style.fontWeight = "normal"; // Make level text normal (not bold)
+        strengthText.appendChild(levelText);
+      });
+
+      const form = document.getElementById("registerForm");
+      const usernameInput = document.getElementById("username");
+      const errorMessage = document.getElementById("error-message");
+
+      // List of forbidden words
+      const forbiddenWords = [
+        "owner",
+        "mod",
+        "admin",
+        "staff",
+        "helper",
+        "adf",
+        "nsh",
+        "nicole107h",
+        "tractors101",
+        "fuck",
+        "shit",
+        "bitch",
+        "ass",
+        "nigger",
+        "nigga",
+        "founder",
+        "faggot",
+        "hoe",
+        "shigga",
+        "yn",
+        "bich",
+        "niga",
+      ];
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        // Get the form values
+        const rawUsername = usernameInput.value.trim(); // original username with casing
+        const usernameLower = rawUsername.toLowerCase(); // lowercase version only for checks
+
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        // Reset any previous error messages
+        errorMessage.style.display = "none";
+
+        if (rawUsername.length < 3) {
+          errorMessage.textContent =
+            "Username must be at least 3 characters long.";
+          errorMessage.style.display = "block";
+          return;
+        }
+
+        // Validate username (no spaces, only _ and . allowed)
+        const usernameRegex = /^[a-z0-9_\.]+$/i; // alphanumeric, underscores, and dots only
+        if (!usernameRegex.test(usernameLower)) {
+          errorMessage.textContent =
+            "Username can only contain letters, numbers, underscores, and periods.";
+          errorMessage.style.display = "block";
+          return;
+        }
+
+        // Check if username contains forbidden words
+        for (let word of forbiddenWords) {
+          if (usernameLower.includes(word)) {
+            errorMessage.textContent = `Username cannot contain restricted words like "${word}".`;
+            errorMessage.style.display = "block";
+            return;
+          }
+        }
+        // Check password match
+        if (password !== confirmPassword) {
+          errorMessage.textContent = "Passwords do not match.";
+          errorMessage.style.display = "block";
+          return;
+        }
+
+        // Check if username is taken
+        try {
+          const res = await fetch(
+            `/api/check-username?username=${encodeURIComponent(usernameLower)}`
+          );
+          const data = await res.json();
+          console.log("Check username response:", data); // Log the server response
+
+          if (data.exists) {
+            errorMessage.textContent = "Username is already taken.";
+            errorMessage.style.display = "block";
+            return;
+          }
+
+          // If everything is good, submit the form via fetch (AJAX)
+          const registerResponse = await fetch("/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `username=${encodeURIComponent(
+              rawUsername
+            )}&password=${encodeURIComponent(password)}`,
+          });
+
+          const registerData = await registerResponse.json();
+          console.log("Register response:", registerData); // Log the registration response
+
+          if (registerData.success) {
+            window.location.href = "/chat"; // Redirect to the chat page after successful registration
+          } else {
+            errorMessage.textContent =
+              registerData.message || "Registration failed. Please try again.";
+            errorMessage.style.display = "block";
+          }
+        } catch (err) {
+          console.error(
+            "Error checking username or submitting registration:",
+            err
+          );
+          errorMessage.textContent = "An error occurred. Please try again.";
+          errorMessage.style.display = "block";
+        }
+      });
+    </script>
+
+    <style>
+      /* Style for the password strength bar */
+      #password-strength-container {
+        margin-top: 10px;
+        width: 100%;
+        margin-bottom: 15px; /* Space between the strength bar and the Register button */
+      }
+
+      #password-strength-text {
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: white; /* White color for the "Your password is" text */
+        font-weight: bold; /* Make text bold */
+      }
+
+      #password-strength-bar {
+        height: 10px;
+        width: 0%;
+        border-radius: 5px;
+        transition: width 0.3s ease;
+      }
+    </style>
+  </body>
+</html>

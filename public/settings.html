@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body>
+<a href="/chat" class="close-button-wrapper">
+  <div class="close-button-circle">×</div>
+  <div class="close-button-label">ESC</div>
+</a>
+    <div class="settings-container">
+      <!-- Tab Navigation (Now on the side) -->
+      <div class="tab-nav">
+        <button class="tab-button" onclick="showTab('account')">Account</button>
+        <button class="tab-button" onclick="showTab('security')">Security</button>
+        <button class="tab-button" onclick="showTab('preferences')">Preferences</button>
+        <button class="tab-button" onclick="showTab('premium')">Premium</button>
+      </div>
+
+      <!-- Content Area -->
+      <div class="tab-content-area">
+        <!-- Account Tab Content -->
+        <div class="tab-content" id="account">
+          <div class="account-settings-section">
+            <!-- Change Username -->
+            <div class="username-change-section">
+              <div class="section-header">Change Username</div>
+              <div id="error-message" class="error-message">
+                <!-- Error message will be shown here -->
+              </div>
+              <div id="success-message" class="success-message">
+              </div>
+              <input id="new-username" type="text" placeholder="New Username" />
+              <input id="username-password" type="password" placeholder="Password" />
+              <button id="changeUsernameBtn">Change Username</button>
+            </div>
+
+            <div class="separator"></div>
+
+            <!-- Change Password -->
+            <form id="change-password-form" class="password-change-section">
+              <div class="section-header">Change Password</div>
+              <input type="password" id="currentPassword" placeholder="Current Password" />
+              <input type="password" id="newPassword" placeholder="New Password" />
+              <input type="password" id="confirmNewPassword" placeholder="Confirm New Password" />
+              <button id="changePasswordBtn">Change Password</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Security Tab Content -->
+        <div class="tab-content" id="security">
+          <h3>Security Settings</h3>
+          <p>Here you can add options for two-factor authentication, security questions, etc.</p>
+        </div>
+
+        <!-- Preferences Tab Content -->
+        <div class="tab-content" id="preferences">
+          <h3>Preferences</h3>
+          <p>Here you can customize your preferences for notifications, themes, etc.</p>
+        </div>
+
+        <!-- Premium Tab Content -->
+        <div class="tab-content" id="premium">
+          <h3>Premium Features</h3>
+          <p>Upgrade to premium for additional features and perks.</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="settings.js"></script>
+  </body>
+</html>

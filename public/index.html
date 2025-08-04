@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to ADF Private Chat</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/project.webp?v=1745362993382"
+      type="image/x-icon"
+    />
+    <style>
+      /* Background animation */
+      body {
+        background: linear-gradient(130deg, #0e0e0e, #1a1a1a);
+        background-size: 400% 400%;
+        animation: pulseBG 15s ease infinite;
+      }
+
+      @keyframes pulseBG {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Initial fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Gentle bobbing animation */
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-24px);
+        }
+      }
+
+      .home-container {
+        background: #1a1a1a;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        animation: fadeIn 1.2s ease forwards, bob 4s ease-in-out infinite;
+      }
+
+      .welcome-message h1 {
+        color: #00ffff;
+        margin-bottom: 10px;
+        font-size: 2.5rem;
+      }
+
+      .welcome-message p {
+        color: #ccc;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 25px;
+        background-color: #00ffff;
+        color: #000;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      }
+
+      .btn:hover {
+        background-color: #00e0e0;
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 500px) {
+        .btn {
+          width: 100%;
+        }
+
+        .home-container {
+          padding: 25px;
+        }
+
+        .welcome-message h1 {
+          font-size: 2rem;
+        }
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: #0e0e0e;
+        overflow: hidden;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+          135deg,
+          rgba(0, 255, 255, 0.1) 0px,
+          rgba(0, 255, 255, 0.15) 1px,
+          transparent 2px,
+          transparent 80px
+        );
+        animation: animate-lines 20s linear infinite,
+          pulse-glow 6s ease-in-out infinite;
+        background-size: 100% 200%;
+        filter: drop-shadow(0 0 4px #00ffff);
+        opacity: 0.5;
+      }
+
+      @keyframes animate-lines {
+        0% {
+          background-position: 0% 0%;
+        }
+        100% {
+          background-position: 0% 100%;
+        }
+      }
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          opacity: 0.4;
+          filter: drop-shadow(0 0 2px #00ffff);
+        }
+        50% {
+          opacity: 0.8;
+          filter: drop-shadow(0 0 6px #00ffff);
+        }
+      }
+    </style>
+  </head>
+<body style="margin: 0; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Main content centered vertically -->
+  <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div class="home-container">
+      <div class="welcome-message">
+        <h1>Welcome to ADF Private Chat</h1>
+        <p>Your secure and private space to chat.</p>
+      </div>
+
+      <div class="buttons">
+        <a href="/login" class="btn">Login</a>
+        <a href="/register" class="btn">Sign Up</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer stays at bottom, spans full width -->
+  <footer style="
+    padding: 20px;
+    background: #121212;
+    color: #888;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 1px solid #222;
+    width: 100%;
+    box-sizing: border-box;
+  ">
+    <div style="margin: 5px;">&copy; 2023–2025 ADF Industries LLC</div>
+    <div style="margin: 5px;">
+      <a href="/privacy" style="color: #00ffff; text-decoration: none; margin-right: 15px;">Privacy Policy</a>
+      <a href="/tos" style="color: #00ffff; text-decoration: none;">Terms of Service</a>
+    </div>
+  </footer>
+</body>
+
+</html>

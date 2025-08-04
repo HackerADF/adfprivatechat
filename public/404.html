@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <title>404 | ADF Private Chat</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #00ffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      position: relative;
+    }
+
+    .flicker-container {
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .flicker-404 {
+      font-size: 6rem;
+      font-weight: bold;
+      color: #00ffff;
+      text-shadow: 0 0 5px #00ffff, 0 0 20px #00ffff33;
+      animation: flicker 3s infinite;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    @keyframes flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 0 5px #00ffff,
+          0 0 10px #00ffff,
+          0 0 20px #00ffff;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+        text-shadow: none;
+      }
+      28%, 60% {
+        opacity: 0.75;
+        text-shadow: 0 0 2px #00ffff;
+      }
+      30%, 70% {
+        opacity: 0.2;
+        text-shadow: none;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      color: #000;
+      background: #00ffff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .home-link:hover {
+      background: #00e0e0;
+    }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: 
+    repeating-linear-gradient(
+      135deg,
+      rgba(0, 255, 255, 0.1) 0px,
+      rgba(0, 255, 255, 0.15) 1px,
+      transparent 2px,
+      transparent 80px
+    );
+  animation: animate-lines 20s linear infinite, pulse-glow 6s ease-in-out infinite;
+  background-size: 100% 200%;
+  filter: drop-shadow(0 0 4px #00ffff);
+  opacity: 0.5;
+}
+
+
+@keyframes animate-lines {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 2px #00ffff);
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px #00ffff);
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="flicker-container">
+    <div class="flicker-404">404</div>
+    <div class="message">Oops! Page not found.</div>
+    <a class="home-link" href="/">Go Home</a>
+  </div>
+</body>
+</html>

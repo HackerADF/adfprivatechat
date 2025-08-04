@@ -1,0 +1,705 @@
+ /* Base reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Full screen layout */
+body,
+html {
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f0f0f;
+  color: #eaeaea;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  transition: margin-right 0.3s ease; /* Smooth transition when member list appears */
+}
+
+/* Header */
+.header {
+  display: flex;
+  background-color: #1a1a1a;
+  color: #00ffff;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 24px;
+  border-bottom: 1px solid #333;
+  position: relative;
+}
+
+.header h2 {
+  margin: 0;
+  flex-grow: 1;
+}
+
+
+/* Logout button */
+#logout-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #1a1a1a; /* Set background color */
+  border: 2px solid #ffffff; /* Optional: border around the button */
+  border-radius: 50%; /* Optional: make the button circular */
+  padding: 8px; /* Add padding around the SVG */
+  cursor: pointer;
+  display: inline-block;
+}
+
+#logout-btn svg {
+  width: 32px; /* Adjust size of the SVG */
+  height: 32px;
+  fill: #ffffff; /* Set the default SVG color */
+}
+
+#logout-btn:hover {
+  background-color: #333333; /* Darker background on hover */
+}
+
+#logout-btn:hover svg {
+  fill: #ff4d4d; /* Change SVG color to red on hover */
+}
+#logout-btn,
+#settings-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+#settings-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#settings-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+/* Messages area */
+#messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 250px; /* Adjusted margin to avoid overlap with member list */
+}
+
+/* Individual message */
+#messages .message {
+  background-color: #1f1f1f;
+  padding: 12px 15px;
+  border-radius: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Username and timestamp container */
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+/* Staff Action button styled like submit, but red */
+#staff-actions button {
+  padding: 12px 20px;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+#staff-actions button:hover {
+  background-color: #ff1a1a;
+}
+
+/* Username */
+.username {
+  font-weight: bold;
+  color: #00ffff; /* Adjust color if needed */
+}
+
+/* Timestamp */
+.timestamp {
+  font-size: 12px;
+  color: gray;
+}
+
+/* Message content */
+.message-content {
+  color: #eaeaea;
+}
+
+/* Chat form */
+#chat-form {
+  display: flex;
+  border-top: 1px solid #333;
+  padding: 15px;
+  background-color: #1a1a1a;
+  transition: margin-right 0.3s ease; /* Smooth transition when member list appears */
+  margin-right: 250px; /* Add margin to push everything to the left */
+}
+
+/* Message input */
+#chat-message {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #2a2a2a;
+  color: #fff;
+  outline: none;
+  margin-right: 10px;
+  transition: border 0.2s ease;
+  border: 1px solid transparent;
+}
+
+#chat-message:focus {
+  border: 1px solid #00cc66;
+}
+
+.system-message {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.system-rank-message {
+  text-align: center;
+  color: #00a6ff;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.connection-join-message {
+  text-align: center;
+  color: #23db85;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.connection-leave-message {
+  text-align: center;
+  color: #e81356;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* Submit button */
+button[type="submit"] {
+  padding: 12px 20px;
+  background-color: #00ffff;
+  border: none;
+  border-radius: 5px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #00e0e0;
+}
+
+/* Connection status */
+#status {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #888;
+  background-color: #121212;
+  border-top: 1px solid #222;
+}
+
+/* Scrollbar tweaks */
+#messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+/* Smooth transition for page load */
+body {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Staff Action Modal Overlay */
+#actionFormModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Staff Action Form */
+#actionForm {
+  background-color: #1a1a1a;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 350px;
+  width: 90%;
+  color: #eaeaea;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Form heading */
+#actionForm h2 {
+  margin-bottom: 10px;
+  color: #00ffff;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Form labels */
+#actionForm label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Input and select styling */
+#actionForm input[type="text"],
+#actionForm select {
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+}
+
+#actionForm input[type="text"]:focus,
+#actionForm select:focus {
+  border-color: #00cc66;
+}
+
+/* Submit and Cancel buttons */
+#actionForm button[type="submit"],
+#actionForm button[type="button"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Submit button styling */
+#actionForm button[type="submit"] {
+  background-color: #00ffff;
+  color: #000;
+}
+
+#actionForm button[type="submit"]:hover {
+  background-color: #00e0e0;
+}
+
+/* Cancel button styling */
+#actionForm button[type="button"] {
+  background-color: #444;
+  color: #fff;
+}
+
+#actionForm button[type="button"]:hover {
+  background-color: #666;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: 
+    url('https://i.imgur.com/YVjLNWC.png'),
+    repeating-linear-gradient(
+      135deg,
+      rgba(0, 255, 255, 0.1) 0px,
+      rgba(0, 255, 255, 0.15) 1px,
+      transparent 2px,
+      transparent 80px
+    );
+  background-size: cover, 100% 200%;
+  background-position: center, 0% 0%; /* 👈 Static image, animated gradient */
+  background-repeat: no-repeat, repeat;
+  animation: animate-lines 20s linear infinite, pulse-glow 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px #00ffff);
+  opacity: 0.5;
+}
+
+@keyframes animate-lines {
+  0% {
+    background-position: center, 0% 0%;
+  }
+  100% {
+    background-position: center, 0% 100%;
+  }
+}
+
+@keyframes animate-lines {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 2px #00ffff);
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px #00ffff);
+  }
+}
+
+.enter-settings-button {
+  font-size: 22px;
+  color: white;
+  text-decoration: none;
+  margin-left: auto;
+  padding: 5px;
+}
+
+.popup-box {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1f1f1f;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+.popup-box.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup-box.hidden {
+  opacity: 0;
+}
+
+.custom-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center at the top-left of messages container */
+  background: #222;
+  color: white;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 1000;
+  display: block; /* Always visible */
+  width: 150px;
+}
+
+.custom-menu button {
+  background: #333;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  margin: 4px 0;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.custom-menu button:hover {
+  background-color: #555;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#banModal {
+  display: none; /* Hidden initially */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.modal-content {
+  background: #1a1a1a;
+  padding: 40px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  text-align: center;
+}
+
+.modalButton {
+  background-color: #00ffff;
+  color: #000;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.modalButton:hover {
+  background-color: #00e0e0;
+}
+
+.member-list {
+  position: fixed;
+  right: 0;
+  top: 80px; /* Push the member list down below the header */
+  width: 250px;
+  height: calc(100vh - 80px); /* Adjust the height of the member list */
+  background-color: #1a1a1a;
+  color: white;
+  overflow-y: auto;
+  padding: 10px 15px;
+  font-family: sans-serif;
+  border-left: 1px solid #333;
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+.member-list h4 {
+  margin-top: 15px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.member-list .username {
+  margin-left: 8px;
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.username.online {
+  color: #ffffff;
+}
+
+.username.offline {
+  color: #999;
+}
+
+.username.owner {
+  color: #e81717;
+}
+
+.username.verifiedstaff {
+  color: #2196f3;
+}
+
+.username.moderator {
+  color: #4061d6;
+}
+
+.username.official {
+  color: #4caf50;
+}
+
+.username.vipplus {
+  color: #00ff6a;
+}
+
+.username.vip {
+  color: #fcba03;
+}
+
+.username.owner.offline {
+  color: #9b0f0f; /* Darker red */
+}
+
+.username.verifiedstaff.offline {
+  color: #1a5e99; /* Darker blue */
+}
+
+.username.moderator.offline {
+  color: #2f49a1; /* Darker blue-purple */
+}
+
+.username.official.offline {
+  color: #357a3c; /* Darker green */
+}
+
+.username.vipplus.offline {
+  color: #00994d; /* Darker bright green */
+}
+
+.username.vip.offline {
+  color: #b28d00; /* Darker gold */
+}
+
+/* Default offline fallback */
+.username.offline {
+  color: #666;
+}
+
+.custom-emoji {
+  height: 1em;
+  vertical-align: middle;
+}
+
+.custom-emoji.large {
+  height: 2.5em;
+}
+
+.emoji-only {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+    #emoji-suggestions {
+      display: none;
+      position: absolute;
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    .suggestion {
+      display: flex;
+      align-items: center;
+      padding: 5px 8px;
+      cursor: pointer;
+      color: #eee;
+    }
+
+    .suggestion:hover,
+    .suggestion.active {
+      background-color: #555;
+    }
+
+    .emoji-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+
+/* For modern browsers (WebKit-based: Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ffff, #00cc66);
+  border-radius: 6px;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 0 6px #00ffff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00e0e0, #00aa55);
+  box-shadow: 0 0 8px #00ffff;
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff #1a1a1a;
+}

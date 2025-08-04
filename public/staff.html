@@ -1,0 +1,42 @@
+<!-- staff.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="/staff.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, <span id="staff-username"></span></h2>
+
+        <div id="staff-content"></div>
+        <div id="permissions"></div>
+
+        <a href="/staff/signout">Sign Out</a>
+    </div>
+
+    <script>
+        // Fetch staff data from the server to customize content
+        fetch('/staff/data')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('staff-username').textContent = data.username;
+                const contentDiv = document.getElementById('staff-content');
+                const permissionsDiv = document.getElementById('permissions');
+
+                if (data.level >= 3) {
+                    contentDiv.innerHTML = '<h3>Admin Dashboard</h3>';
+                    permissionsDiv.innerHTML = '<p>Admin Permissions: Create/Remove staff, Ban user, Mute user, etc.</p>';
+                } else if (data.level === 2) {
+                    contentDiv.innerHTML = '<h3>Staff Dashboard</h3>';
+                    permissionsDiv.innerHTML = '<p>Staff Permissions: Mute user, Change username, Kick user</p>';
+                } else {
+                    contentDiv.innerHTML = '<h3>Basic Staff Dashboard</h3>';
+                    permissionsDiv.innerHTML = '<p>Basic Staff Permissions: View messages</p>';
+                }
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - ADF Private Chat</title>
+    <link rel="stylesheet" href="login.css" />
+    <link rel="icon" href="https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/project.webp?v=1745362993382" type="image/x-icon">
+    <style>
+      .error-message {
+        background-color: rgba(
+          255,
+          0,
+          0,
+          0.1
+        );
+        border: 1px solid red;
+        color: red;
+        padding: 10px;
+        margin-bottom: 15px;
+        display: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <h2>Login to ADF Private Chat</h2>
+        <div id="error-message" class="error-message">
+          Invalid username or password.
+        </div>
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn">Login</button>
+          </div>
+        </form>
+        <p class="signup-link">
+          Don't have an account? <a href="/register">Sign up here</a>
+        </p>
+      </div>
+    </div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const errorBox = document.getElementById("error-message");
+
+  if (params.get("reason") === "banned") {
+    errorBox.textContent = "Your account has been banned.";
+    errorBox.style.display = "block";
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // Request notification permission if not already granted or denied
+    if ("Notification" in window && Notification.permission === "default") {
+      try {
+        await Notification.requestPermission();
+      } catch (err) {
+        console.warn("Notification permission request failed:", err);
+      }
+    }
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const response = await fetch("/login", {
+      method: "POST",
+      body: new URLSearchParams(formData),
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      sessionStorage.setItem("session_token", result.token);
+
+      // Optional: show a welcome notification if permission is granted
+      if (Notification.permission === "granted") {
+        new Notification("Welcome back!", {
+          body: "You're now logged into ADF Private Chat.",
+          icon: "/icon.png"
+        });
+      }
+
+      window.location.href = "/chat";
+    } else {
+      errorBox.textContent =
+        result.message || "Invalid username or password.";
+      errorBox.style.display = "block";
+    }
+  });
+</script>
+  </body>
+</html>

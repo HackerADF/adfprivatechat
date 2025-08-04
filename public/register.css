@@ -1,0 +1,158 @@
+/* Base styling */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #0e0e0e;
+  color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.error-message {
+  background-color: rgba(255, 0, 0, 0.1); /* Darker, more transparent red */
+  border: 1px solid red;
+  color: red;
+  padding: 10px;
+  margin-bottom: 15px;
+  display: none;
+  border-radius: 5px;
+}
+
+h2 {
+  text-align: center;
+  color: #00ffff;
+  margin-bottom: 20px;
+}
+
+/* Form fields */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ccc;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background: #2a2a2a;
+  color: #fff;
+  outline: none;
+  transition: background 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background: #333;
+}
+
+button[type="submit"] {
+  background-color: #00ffff;
+  color: #000;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #00e0e0;
+}
+
+p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+a {
+  color: #00ffff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Green outline when input is focused or filled */
+/* Green outline only when focused or filled, with thin border */
+input {
+  border: 1px solid #ccc;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+input.filled {
+  border-color: #00cc66; /* softer green */
+  border-width: 1.5px;
+  outline: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(0, 255, 255, 0.1) 0px,
+    rgba(0, 255, 255, 0.15) 1px,
+    transparent 2px,
+    transparent 80px
+  );
+  animation: animate-lines 20s linear infinite,
+    pulse-glow 6s ease-in-out infinite;
+  background-size: 100% 200%;
+  filter: drop-shadow(0 0 4px #00ffff);
+  opacity: 0.5;
+}
+
+@keyframes animate-lines {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 2px #00ffff);
+  }
+  50% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px #00ffff);
+  }
+}

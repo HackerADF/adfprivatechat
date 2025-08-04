@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <link rel="stylesheet" href="chat.css" />
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/project.webp?v=1745362993382"
+      type="image/x-icon"
+    />
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h2>Chat</h2>
+      <button id="logout-btn" onclick="logout()">
+        <svg
+          fill="#ffffff"
+          height="64px"
+          width="64px"
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 512.00 512.00"
+          xml:space="preserve"
+          stroke="#ffffff"
+        >
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <g>
+              <g>
+                <path
+                  d="M372.513,202.174H190.268l10.841-71.555c0.801-5.285-1.683-10.53-6.281-13.258c-4.598-2.725-10.39-2.395-14.646,0.841 L12.729,245.55c-3.264,2.484-5.18,6.349-5.18,10.45s1.917,7.966,5.18,10.45l167.453,127.348c2.337,1.776,5.137,2.678,7.949,2.678 c2.299,0,4.607-0.603,6.673-1.823c4.595-2.712,7.091-7.936,6.315-13.215L190.201,307.2h182.311 c7.249,0,12.472-5.879,12.472-13.128v-78.769C384.985,208.053,379.762,202.174,372.513,202.174z M358.728,280.944H175.002 c-3.815,0-7.441,1.661-9.935,4.548c-2.494,2.887-3.609,6.716-3.054,10.491l8.447,57.433L42.365,256l127.933-97.293l-8.276,54.629 c-0.574,3.782,0.53,7.626,3.026,10.526c2.493,2.901,6.128,4.569,9.954,4.569h183.727V280.944z"
+                ></path>
+              </g>
+            </g>
+            <g>
+              <g>
+                <path
+                  d="M465.135,0H121.764c-7.249,0-13.785,5.879-13.785,13.128v52.513c0,7.249,6.535,13.128,13.785,13.128h303.918v354.462 H121.764c-7.249,0-13.785,5.879-13.785,13.128v52.513c0,7.249,6.535,13.128,13.785,13.128h343.371 c22.041,0,39.316-17.668,39.316-39.385V39.385C504.451,17.668,487.176,0,465.135,0z M478.195,472.615 c0,7.117-5.625,13.128-13.06,13.128H134.236v-26.256h305.231c7.249,0,12.472-5.879,12.472-13.128V65.641 c0-7.249-5.222-13.128-12.472-13.128H134.236V26.256h330.899c7.435,0,13.06,6.011,13.06,13.128V472.615z"
+                ></path>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </button>
+      <button id="settings-btn" onclick="openSettings()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M14.2788 2.15224C13.9085 2 13.439 2 12.5 2C11.561 2 11.0915 2 10.7212 2.15224C10.2274 2.35523 9.83509 2.74458 9.63056 3.23463C9.53719 3.45834 9.50065 3.7185 9.48635 4.09799C9.46534 4.65568 9.17716 5.17189 8.69017 5.45093C8.20318 5.72996 7.60864 5.71954 7.11149 5.45876C6.77318 5.2813 6.52789 5.18262 6.28599 5.15102C5.75609 5.08178 5.22018 5.22429 4.79616 5.5472C4.47814 5.78938 4.24339 6.1929 3.7739 6.99993C3.30441 7.80697 3.06967 8.21048 3.01735 8.60491C2.94758 9.1308 3.09118 9.66266 3.41655 10.0835C3.56506 10.2756 3.77377 10.437 4.0977 10.639C4.57391 10.936 4.88032 11.4419 4.88029 12C4.88026 12.5581 4.57386 13.0639 4.0977 13.3608C3.77372 13.5629 3.56497 13.7244 3.41645 13.9165C3.09108 14.3373 2.94749 14.8691 3.01725 15.395C3.06957 15.7894 3.30432 16.193 3.7738 17C4.24329 17.807 4.47804 18.2106 4.79606 18.4527C5.22008 18.7756 5.75599 18.9181 6.28589 18.8489C6.52778 18.8173 6.77305 18.7186 7.11133 18.5412C7.60852 18.2804 8.2031 18.27 8.69012 18.549C9.17714 18.8281 9.46533 19.3443 9.48635 19.9021C9.50065 20.2815 9.53719 20.5417 9.63056 20.7654C9.83509 21.2554 10.2274 21.6448 10.7212 21.8478C11.0915 22 11.561 22 12.5 22C13.439 22 13.9085 22 14.2788 21.8478C14.7726 21.6448 15.1649 21.2554 15.3694 20.7654C15.4628 20.5417 15.4994 20.2815 15.5137 19.902C15.5347 19.3443 15.8228 18.8281 16.3098 18.549C16.7968 18.2699 17.3914 18.2804 17.8886 18.5412C18.2269 18.7186 18.4721 18.8172 18.714 18.8488C19.2439 18.9181 19.7798 18.7756 20.2038 18.4527C20.5219 18.2105 20.7566 17.807 21.2261 16.9999C21.6956 16.1929 21.9303 15.7894 21.9827 15.395C22.0524 14.8691 21.9088 14.3372 21.5835 13.9164C21.4349 13.7243 21.2262 13.5628 20.9022 13.3608C20.4261 13.0639 20.1197 12.558 20.1197 11.9999C20.1197 11.4418 20.4261 10.9361 20.9022 10.6392C21.2263 10.4371 21.435 10.2757 21.5836 10.0835C21.9089 9.66273 22.0525 9.13087 21.9828 8.60497C21.9304 8.21055 21.6957 7.80703 21.2262 7C20.7567 6.19297 20.522 5.78945 20.2039 5.54727C19.7799 5.22436 19.244 5.08185 18.7141 5.15109C18.4722 5.18269 18.2269 5.28136 17.8887 5.4588C17.3915 5.71959 16.7969 5.73002 16.3099 5.45096C15.8229 5.17191 15.5347 4.65566 15.5136 4.09794C15.4993 3.71848 15.4628 3.45833 15.3694 3.23463C15.1649 2.74458 14.7726 2.35523 14.2788 2.15224ZM12.5 15C14.1695 15 15.5228 13.6569 15.5228 12C15.5228 10.3431 14.1695 9 12.5 9C10.8305 9 9.47716 10.3431 9.47716 12C9.47716 13.6569 10.8305 15 12.5 15Z"
+              fill="#1C274C"
+            ></path>
+          </g>
+        </svg>
+      </button>
+    </div>
+
+    <div id="messages"></div>
+
+    <div id="customMenu" class="custom-menu" style="display: none">
+      <button onclick="alert('Mute ' + selectedUsername)">Mute</button>
+      <button onclick="alert('Unmute ' + selectedUsername)">Unmute</button>
+    </div>
+
+    <!-- Footer containing the form and connection status -->
+    <div class="footer">
+      <form id="chat-form">
+        <textarea
+          id="chat-message"
+          placeholder="Type a message"
+          required
+          rows="1"
+        ></textarea>
+        <div id="emoji-suggestions" class="suggestions-box"></div>
+        <button type="submit">Send</button>
+        <div id="staff-actions" style="display: none">
+          <button id="staff-view-btn" onclick="window.location.href='/staff'">
+            Staff View
+          </button>
+        </div>
+      </form>
+      <p id="status"></p>
+    </div>
+
+    <div class="modal" id="banModal">
+      <div class="modal-content">
+        <h2>You've been banned!</h2>
+        <p>Due to a violation, your account has been banned. Please log out.</p>
+        <button class="modalButton" onclick="logout()">Log Out</button>
+      </div>
+    </div>
+    <script src="/service-worker.js"></script>
+    <script>
+      const socket = io();
+      const messageContainer = document.getElementById("messages");
+      const statusContainer = document.getElementById("status");
+      const messageInput = document.getElementById("chat-message");
+      const menu = document.getElementById("customMenu");
+
+      // Get the top-left position of the messages container
+      const rect = messageContainer.getBoundingClientRect();
+      const offsetX = rect.left + window.scrollX;
+      const offsetY = rect.top + window.scrollY;
+
+      const messageBox = document.getElementById("chat-message");
+      const chatForm = document.getElementById("chat-form");
+
+      function autoResize() {
+        messageBox.style.height = "auto";
+        messageBox.style.height = messageBox.scrollHeight + 2 + "px"; // adds 5px buffer
+      }
+
+      // Resize on input (also captures shift+enter typing)
+      messageBox.addEventListener("input", autoResize);
+
+      // Handle enter vs shift+enter
+      messageBox.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          chatForm.requestSubmit(); // Send the message
+          autoResize();
+        }
+      });
+
+      // Reset after message sent
+      chatForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const message = messageBox.value.trim();
+        if (message === "") return;
+
+        socket.emit("chat message", {
+          user: "YourUsername", // Replace with dynamic user logic if needed
+          message: msg,
+          timestamp,
+        });
+        scrollToBottom();
+
+        messageBox.value = "";
+        messageBox.style.height = "auto"; // Reset the height
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        fetch("/check-staff")
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.staff === true) {
+              isStaff = true;
+              document.getElementById("staff-actions").style.display = "block";
+            }
+          });
+
+        const menu = document.getElementById("customMenu");
+        const messageContainer = document.getElementById("messages");
+
+        // Get the top-left position of the messages container
+        const rect = messageContainer.getBoundingClientRect();
+        const offsetX = rect.left + window.scrollX;
+        const offsetY = rect.top + window.scrollY;
+
+        // Center the menu on the top-left corner of the messages container
+        menu.style.left = `${offsetX}px`;
+        menu.style.top = `${offsetY}px`;
+      });
+
+      function scrollToBottom() {
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+      }
+
+      socket.on("chat message", ({ user, message, timestamp }) => {
+        const msgElem = document.createElement("div");
+        msgElem.classList.add("message");
+
+        const messageHeaderElem = document.createElement("div");
+        messageHeaderElem.classList.add("message-header");
+
+        const usernameElem = document.createElement("span");
+        usernameElem.innerHTML = user;
+        usernameElem.classList.add("username");
+
+        const timestampElem = document.createElement("span");
+        timestampElem.textContent = timestamp;
+        timestampElem.classList.add("timestamp");
+
+        messageHeaderElem.appendChild(usernameElem);
+        messageHeaderElem.appendChild(timestampElem);
+
+        const messageElem = document.createElement("div");
+        const rawMessage =
+          typeof message === "object" && message.message
+            ? message.message
+            : message;
+        function sanitizeAndFormat(message) {
+          const div = document.createElement("div");
+          div.innerText = message;
+          let sanitized = div.innerHTML.replace(/\n/g, "<br>");
+
+          const customEmojis = {
+            bruhmogus:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/bruhmogus.webp?v=1748936990744",
+            brows:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/brows.webp?v=1748937430785",
+            doorcat:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/doorcat.webp?v=1748937396741",
+            eerie:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/errie.webp?v=1748937391978",
+            dentge:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/dentge.webp?v=1748937384630",
+            stare:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/stare.webp?v=1748938294809",
+            brows:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/brows.webp?v=1748937430785",
+            True: "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/true.webp?v=1748938364359",
+            AlarsYawn:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/AlarsYawn.webp?v=1748938371693",
+            mcskull:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/mcskull.webp?v=1748938374819",
+            dead: "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/dead.webp?v=1748938535911",
+            WiseSpookTree:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/WiseSpookTree.webp?v=1748938539149",
+            mcskull:
+              "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/mcskull.webp?v=1748938374819",
+            // Add more:
+            // sus: "https://example.com/emojis/sus.png",
+            // pog: "https://example.com/emojis/pog.png"
+          };
+
+          const emojiNames = Object.keys(customEmojis);
+          const emojiRegex = new RegExp(`:(${emojiNames.join("|")}):`, "g");
+
+          // For emoji-only detection, strip <br> and whitespace
+          const testStr = sanitized.replace(/<br>/g, "").trim();
+          const emojiOnly =
+            testStr.length > 0 && testStr.replace(emojiRegex, "").trim() === "";
+
+          // Replace emoji codes with images
+          sanitized = sanitized.replace(emojiRegex, (_, name) => {
+            const src = customEmojis[name];
+            const className = emojiOnly ? "custom-emoji large" : "custom-emoji";
+            return `<img src="${src}" alt=":${name}:" class="${className}">`;
+          });
+
+          // Optional wrapper to ensure inQline layout for emoji-only
+          if (emojiOnly) {
+            sanitized = `<span class="emoji-only">${sanitized}</span>`;
+          }
+
+          return sanitized;
+        }
+
+        const emojiMap = {
+          bruhmogus:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/bruhmogus.webp?v=1748936990744",
+          brows:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/brows.webp?v=1748937430785",
+          doorcat:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/doorcat.webp?v=1748937396741",
+          eerie:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/errie.webp?v=1748937391978",
+          dentge:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/dentge.webp?v=1748937384630",
+          stare:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/stare.webp?v=1748938294809",
+          brows:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/brows.webp?v=1748937430785",
+          True: "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/true.webp?v=1748938364359",
+          AlarsYawn:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/AlarsYawn.webp?v=1748938371693",
+          mcskull:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/mcskull.webp?v=1748938374819",
+          dead: "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/dead.webp?v=1748938535911",
+          WiseSpookTree:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/WiseSpookTree.webp?v=1748938539149",
+          mcskull:
+            "https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/mcskull.webp?v=1748938374819",
+          // Add more:
+          // sus: "https://example.com/emojis/sus.png",
+          // pog: "https://example.com/emojis/pog.png"
+        };
+
+        const textarea = document.getElementById("chat-message");
+        const suggestionsBox = document.getElementById("emoji-suggestions");
+
+        let activeIndex = -1;
+        let currentSuggestions = [];
+
+        textarea.addEventListener("input", () => {
+          const caretPos = textarea.selectionStart;
+          const valueBeforeCaret = textarea.value.slice(0, caretPos);
+          const match = /:(\w+)?$/.exec(valueBeforeCaret);
+
+          if (match) {
+            const partial = match[1] || "";
+            currentSuggestions = Object.keys(emojiMap).filter((name) =>
+              name.startsWith(partial)
+            );
+            showSuggestions(currentSuggestions);
+          } else {
+            hideSuggestions();
+          }
+        });
+
+        textarea.addEventListener("keydown", (e) => {
+          if (suggestionsBox.style.display === "block") {
+            if (e.key === "ArrowDown") {
+              activeIndex = (activeIndex + 1) % currentSuggestions.length;
+              updateSuggestionHighlight();
+              e.preventDefault();
+            } else if (e.key === "ArrowUp") {
+              activeIndex =
+                (activeIndex - 1 + currentSuggestions.length) %
+                currentSuggestions.length;
+              updateSuggestionHighlight();
+              e.preventDefault();
+            } else if (e.key === "Enter" && activeIndex >= 0) {
+              e.preventDefault();
+              selectSuggestion(currentSuggestions[activeIndex]);
+            } else if (e.key === "Escape") {
+              hideSuggestions();
+            }
+          }
+        });
+
+        function showSuggestions(list) {
+          suggestionsBox.innerHTML = "";
+          activeIndex = -1;
+
+          if (list.length === 0) return hideSuggestions();
+
+          list.forEach((name, i) => {
+            const item = document.createElement("div");
+            item.className = "suggestion";
+            item.innerHTML = `<img src="${emojiMap[name]}" class="emoji-icon" alt=":${name}:"> :${name}:`;
+            item.addEventListener("mousedown", (ev) => {
+              ev.preventDefault(); // Prevent losing focus on textarea
+              selectSuggestion(name);
+            });
+            suggestionsBox.appendChild(item);
+          });
+
+          suggestionsBox.style.display = "block";
+          positionSuggestionBox();
+        }
+
+        function hideSuggestions() {
+          suggestionsBox.style.display = "none";
+          suggestionsBox.innerHTML = "";
+          activeIndex = -1;
+          currentSuggestions = [];
+        }
+
+        function updateSuggestionHighlight() {
+          [...suggestionsBox.children].forEach((el, i) => {
+            el.classList.toggle("active", i === activeIndex);
+          });
+        }
+
+        function selectSuggestion(name) {
+          const caretPos = textarea.selectionStart;
+          const before = textarea.value.slice(0, caretPos);
+          const after = textarea.value.slice(caretPos);
+          const updated = before.replace(/:\w*$/, `:${name}:`);
+          textarea.value = updated + after;
+
+          // Set cursor right after the inserted emoji code
+          const newCaret = updated.length;
+          textarea.setSelectionRange(newCaret, newCaret);
+
+          hideSuggestions();
+          textarea.focus();
+        }
+
+        function positionSuggestionBox() {
+          const rect = textarea.getBoundingClientRect();
+          suggestionsBox.style.position = "absolute";
+          suggestionsBox.style.left = `${rect.left + window.scrollX}px`;
+          // Change this line to position above the textarea:
+          suggestionsBox.style.top = `${
+            rect.top + window.scrollY - suggestionsBox.offsetHeight
+          }px`;
+          suggestionsBox.style.width = `${rect.width}px`;
+        }
+
+        // Optional: reposition suggestions on window resize/scroll
+        window.addEventListener("resize", () => {
+          if (suggestionsBox.style.display === "block") positionSuggestionBox();
+        });
+        window.addEventListener("scroll", () => {
+          if (suggestionsBox.style.display === "block") positionSuggestionBox();
+        });
+
+        messageElem.innerHTML = sanitizeAndFormat(rawMessage);
+        messageElem.classList.add("message-content");
+
+        msgElem.appendChild(messageHeaderElem);
+        msgElem.appendChild(messageElem);
+
+        messageContainer.appendChild(msgElem);
+        scrollToBottom();
+      });
+
+      document.getElementById("chat-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const msg = messageInput.value.trim();
+        const timestamp = new Date().toLocaleTimeString();
+
+        if (msg.startsWith("/mute ")) {
+          const targetUsername = msg.slice(msg.indexOf(" ") + 1).trim();
+          if (!targetUsername)
+            return showPopup("Please specify a user to mute.");
+          fetch("/mute", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ targetUsername }), // ✅ sends actual JSON
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showPopup(data.message);
+              socket.emit(
+                "system message",
+                `${targetUsername} has been muted.`
+              );
+            })
+            .catch((err) => {
+              showPopup("Error muting user.");
+              console.log(err);
+            });
+
+          messageInput.value = "";
+          return;
+        }
+
+        if (msg.startsWith("/unmute ")) {
+          const targetUsername = msg.slice(msg.indexOf(" ") + 1).trim();
+          if (!targetUsername)
+            return showPopup("Please specify a user to unmute.");
+          fetch("/unmute", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ targetUsername }), // ✅ sends actual JSON
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showPopup(data.message);
+              socket.emit(
+                "system message",
+                `${targetUsername} has been muted.`
+              );
+            })
+            .catch((err) => {
+              showPopup("Error unmuting user.");
+              console.log(err);
+            });
+
+          messageInput.value = "";
+          return;
+        }
+
+        if (msg.startsWith("/ban ")) {
+          const targetUsername = msg.slice(msg.indexOf(" ") + 1).trim();
+          if (!targetUsername)
+            return showPopup("Please specify a user to ban.");
+          fetch("/ban", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ targetUsername }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showPopup(data.message);
+              socket.emit(
+                "system message",
+                `${targetUsername} has been banned.`
+              );
+            })
+            .catch((err) => {
+              showPopup("Error banning user.");
+              console.log(err);
+            });
+
+          messageInput.value = "";
+          return;
+        }
+
+        if (msg.startsWith("/unban ")) {
+          const targetUsername = msg.slice(msg.indexOf(" ") + 1).trim();
+          if (!targetUsername)
+            return showPopup("Please specify a user to unban.");
+          fetch("/unban", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ targetUsername }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showPopup(data.message);
+              socket.emit(
+                "system message",
+                `${targetUsername} has been unbanned.`
+              );
+            })
+            .catch((err) => {
+              showPopup("Error unbanning user.");
+              console.log(err);
+            });
+
+          messageInput.value = "";
+          return;
+        }
+
+        if (msg.startsWith("/setrank ")) {
+          const args = msg.split(" ").slice(1);
+          const [targetUsername, rankInput] = args;
+
+          if (!targetUsername || !rankInput) {
+            return showPopup("Usage: /setrank <username> <rank>");
+          }
+
+          fetch("/setrank", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              targetUsername,
+              rankInput: rankInput.toLowerCase(),
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              showPopup(data.message);
+              if (data.success) {
+                socket.emit(
+                  "system message",
+                  `${targetUsername} has been ranked to ${data.rank}.`
+                );
+              }
+            })
+            .catch((err) => {
+              showPopup("Error setting rank.");
+              console.log(err);
+            });
+
+          messageInput.value = "";
+          return;
+        }
+
+        socket.emit("chat message", {
+          user: "YourUsername", // Replace with dynamic user logic if needed
+          message: msg,
+          timestamp,
+        });
+        messageInput.value = "";
+        scrollToBottom();
+      });
+
+      socket.on("system message", (text) => {
+        const sysMsgElem = document.createElement("div");
+        sysMsgElem.classList.add("system-message");
+        sysMsgElem.textContent = text;
+
+        messageContainer.appendChild(sysMsgElem);
+        scrollToBottom();
+      });
+
+      socket.on("rank message", (text) => {
+        const sysMsgElem = document.createElement("div");
+        sysMsgElem.classList.add("system-rank-message");
+        sysMsgElem.textContent = text;
+
+        messageContainer.appendChild(sysMsgElem);
+        scrollToBottom();
+      });
+
+      socket.on("connection join", (text) => {
+        const sysMsgElem = document.createElement("div");
+        sysMsgElem.classList.add("connection-join-message");
+        sysMsgElem.textContent = text;
+
+        messageContainer.appendChild(sysMsgElem);
+        scrollToBottom();
+      });
+
+      socket.on("connection leave", (text) => {
+        const sysMsgElem = document.createElement("div");
+        sysMsgElem.classList.add("connection-leave-message");
+        sysMsgElem.textContent = text;
+
+        messageContainer.appendChild(sysMsgElem);
+        scrollToBottom();
+      });
+
+      socket.on("startup", () => {
+        window.location.href = "/login";
+      });
+
+      socket.on("connect", () => {
+        statusContainer.textContent = "You are connected!";
+      });
+
+      socket.on("disconnect", () => {
+        statusContainer.textContent = "Disconnected from server.";
+      });
+
+      function logout() {
+        window.location.href = "/logout"; // Redirect to the logout route
+      }
+
+      function showPopup(message) {
+        const popupBox = document.getElementById("popup-box");
+        const popupMessage = document.getElementById("popup-message");
+
+        popupMessage.textContent = message;
+        popupBox.classList.remove("hidden");
+        popupBox.classList.add("show");
+
+        setTimeout(() => {
+          popupBox.classList.remove("show");
+          popupBox.classList.add("hidden");
+        }, 3000); // Hides after 3 seconds
+      }
+
+      let selectedUsername = null;
+
+      document.addEventListener("click", (e) => {
+        const menu = document.getElementById("customMenu");
+
+        // Hide the menu if clicked anywhere else
+        if (!e.target.classList.contains("username")) {
+          menu.style.display = "none";
+          return;
+        }
+
+        // Show the menu on left click of username
+        e.preventDefault();
+        selectedUsername = e.target.textContent.trim();
+
+        menu.style.display = "block";
+        menu.style.left = `${e.pageX}px`;
+        menu.style.top = `${e.pageY}px`;
+      });
+
+      // Optional: hide menu when clicking anywhere else
+      window.addEventListener("click", (e) => {
+        if (
+          !e.target.closest("#customMenu") &&
+          !e.target.classList.contains("username")
+        ) {
+          document.getElementById("customMenu").style.display = "none";
+        }
+      });
+
+      function muteUser() {
+        if (selectedUsername) {
+          document.getElementById(
+            "chat-message"
+          ).value = `/mute ${selectedUsername}`;
+          document.getElementById("chat-form").requestSubmit();
+          selectedUsername = null;
+        }
+      }
+
+      function messageUser() {
+        if (selectedUsername) {
+          document.getElementById(
+            "chat-message"
+          ).value = `@${selectedUsername} `;
+          document.getElementById("chat-message").focus();
+          selectedUsername = null;
+        }
+      }
+
+      socket.on("ban_notification", () => {
+        console.log("[Client] Received ban notification");
+        sessionStorage.removeItem("session_token"); // Optionally remove session token
+
+        // Option 1: Show a modal
+        const modal = document.getElementById("banModal");
+        if (modal) {
+          modal.style.display = "flex";
+        }
+
+        // Option 2 (recommended): Auto redirect to login or banned screen
+        setTimeout(() => {
+          window.location.href = "/login"; // You can make a dedicated banned.html
+        }, 3000);
+      });
+
+      // Function to log out the user
+      function logout() {
+        // Log the user out (clear session or token)
+        sessionStorage.removeItem("session_token"); // Optionally remove session token
+        window.location.href = "/login"; // Redirect to login page
+      }
+
+      socket.on("update-members", (data) => {
+        const container = document.getElementById("member-list");
+        container.innerHTML = ""; // Clear previous content
+
+        // Define rank colors and priority
+        const rankColors = {
+          owner: "e81717", // Red for owner
+          verifiedstaff: "2196F3", // Blue for admins
+          developer: "800055",
+          seniormoderator: "4061d6", // Purple for srmoderators
+          moderator: "4061d6", // Purple for moderators
+          helper: "00ff00",
+          official: "4CAF50", // Green for official users
+          vipplus: "00ff6a", // Light green for VIP+
+          vip: "fcba03", // Gold for VIP
+          member: "b5b5b5",
+        };
+
+        // Rank priority to ensure the correct order
+        const rankPriority = [
+          "owner",
+          "verifiedstaff",
+          "developer",
+          "seniormoderator",
+          "moderator",
+          "helper",
+          "official",
+          "vipplus",
+          "vip",
+          "member",
+          "",
+        ];
+
+        // Define custom rank names
+        const rankNames = {
+          owner: "Owner", // Custom name for owner
+          verifiedstaff: "Trusted Staff", // Custom name for verified staff
+          developer: "Developer",
+          seniormoderator: "Sr. Moderator",
+          moderator: "Moderator", // Custom name for moderators
+          helper: "Helper",
+          official: "Official", // Custom name for official users
+          vipplus: "VIP+", // Custom name for VIP+
+          vip: "VIP", // Custom name for VIP
+          member: "Member",
+        };
+
+        // Helper function to darken a color
+        const darkenColor = (hex, factor = 0.3) => {
+          let color = hex.startsWith("#") ? hex.slice(1) : hex;
+          let r = parseInt(color.slice(0, 2), 16);
+          let g = parseInt(color.slice(2, 4), 16);
+          let b = parseInt(color.slice(4, 6), 16);
+
+          // Apply the factor to darken the color
+          r = Math.floor(r * (1 - factor));
+          g = Math.floor(g * (1 - factor));
+          b = Math.floor(b * (1 - factor));
+
+          // Return the darkened color in hex format
+          return `#${r.toString(16).padStart(2, "0")}${g
+            .toString(16)
+            .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+        };
+
+        // --- ONLINE USERS GROUPED BY RANK ---
+        rankPriority.forEach((rank) => {
+          const users = data.online[rank];
+          if (!users || users.length === 0) return;
+
+          const rankSection = document.createElement("div");
+          const rankName = rankNames[rank] || rank; // Use custom rank name or fallback to the rank itself
+          rankSection.innerHTML = `<h4 style="text-transform: capitalize;">${rankName}</h4>`;
+
+          // Loop through each user in the current rank group
+          users.forEach((user) => {
+            const userElem = document.createElement("div");
+            userElem.classList.add("username", "online");
+
+            // Add the rank color as a class (apply dynamically)
+            const rankColor = rankColors[rank] || "ffffff"; // Default to white if no rank found
+            userElem.style.color = `#${rankColor}`;
+
+            userElem.textContent = user.username;
+            rankSection.appendChild(userElem);
+          });
+
+          container.appendChild(rankSection);
+        });
+
+        // --- OFFLINE USERS ---
+        if (data.offline.length > 0) {
+          const offlineSection = document.createElement("div");
+          offlineSection.innerHTML = `<h4>Offline</h4>`;
+
+          data.offline.forEach((user) => {
+            const userElem = document.createElement("div");
+            userElem.classList.add("username", "offline");
+
+            // Darken the color based on the user's rank
+            const rankColor = rankColors[user.rank] || "ffffff"; // Default to white if no rank found
+            const darkenedColor = darkenColor(rankColor, 0.5); // Darken rank color by 50%
+
+            // Darken the username color a bit more
+            const darkenedUsernameColor = darkenColor(darkenedColor, 0.2); // Darken the user's text color slightly
+
+            userElem.style.color = darkenedUsernameColor;
+            const isStaff =
+              rankPriority.indexOf(user.rank) <= rankPriority.indexOf("helper");
+            userElem.innerHTML = isStaff
+              ? `<span style="color: #4CAF50;">✔</span> ${user.username}`
+              : user.username;
+            offlineSection.appendChild(userElem);
+          });
+
+          container.appendChild(offlineSection);
+        }
+      });
+    </script>
+    <div id="popup-box" class="popup-box hidden">
+      <span id="popup-message"></span>
+      <div id="custom-context-menu" class="context-menu hidden">
+        <ul>
+          <li onclick="handleContextAction('reply')">Reply</li>
+          <li onclick="handleContextAction('mute')">Mute User</li>
+          <li onclick="handleContextAction('delete')">Delete</li>
+        </ul>
+      </div>
+    </div>
+    <div id="member-list" class="member-list"></div>
+  </body>
+</html>

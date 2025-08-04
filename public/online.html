@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="https://cdn.glitch.global/69264440-8ac3-4147-9e23-e5d81d9b7ac1/projectOnline.webp?v=1745382859234" type="image/x-icon">
+  <title>Online | ADF Private Chat</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #00ff99;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      position: relative;
+    }
+
+    .glow-container {
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .glow-online {
+      font-size: 6rem;
+      font-weight: bold;
+      color: #00ff99;
+      text-shadow: 0 0 10px #00ff99, 0 0 30px #00ff99;
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #aaffcc;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 0 10px #00ff99,
+          0 0 30px #00ff99,
+          0 0 60px #00ff99;
+      }
+      50% {
+        opacity: 0.5;
+        text-shadow:
+          0 0 5px #00ff99,
+          0 0 15px #00ff99;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      color: #000;
+      background: #00ff99;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .home-link:hover {
+      background: #00cc77;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: #0e0e0e;
+      overflow: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: 
+        repeating-linear-gradient(
+          135deg,
+          rgba(0, 255, 153, 0.1) 0px,
+          rgba(0, 255, 153, 0.15) 1px,
+          transparent 2px,
+          transparent 80px
+        );
+      animation: animate-lines 20s linear infinite, pulse-glow 6s ease-in-out infinite;
+      background-size: 100% 200%;
+      filter: drop-shadow(0 0 4px #00ff99);
+      opacity: 0.5;
+    }
+
+    @keyframes animate-lines {
+      0% {
+        background-position: 0% 0%;
+      }
+      100% {
+        background-position: 0% 100%;
+      }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        opacity: 0.4;
+        filter: drop-shadow(0 0 2px #00ff99);
+      }
+      50% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 6px #00ff99);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-container">
+    <div class="glow-online">Online</div>
+    <div class="message">The server is live and ready. Let's chat!</div>
+    <a class="home-link" href="/login">Enter Now</a>
+  </div>
+</body>
+</html>
