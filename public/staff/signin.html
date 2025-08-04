@@ -1,0 +1,25 @@
+<!-- staff-signin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Sign In - ADF Chat</title>
+    <link rel="stylesheet" href="/staff.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Staff Sign In</h2>
+        <form action="/staff/signin" method="POST">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Enter your username">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Enter your password">
+
+            <button type="submit">Sign In</button>
+        </form>
+        <div id="error-message" class="error"></div>
+    </div>
+</body>
+</html>
